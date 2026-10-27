@@ -1,0 +1,25 @@
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(254) NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE comments (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    reply_to BIGINT NULL,
+    homepage VARCHAR(200),
+    text TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT,
+    FOREIGN KEY (reply_to) REFERENCES comments(id) ON DELETE CASCADE
+);
+
+CREATE TABLE files (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    file VARCHAR(100) NOT NULL,
+    comment_id BIGINT NOT NULL,
+    uploaded_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE RESTRICT
+);
