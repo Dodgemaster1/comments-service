@@ -60,7 +60,13 @@ class CommentService:
         if cached_comments is not None:
             return cached_comments
 
-        roots_qs = CommentModel.objects.filter(depth=1).order_by(parsed_query.ordering, "-id")
+        ordering = {
+            "username": "user__username",
+            "-username": "-user__username",
+            "email": "user__email",
+            "-email": "-user__email",
+        }.get(parsed_query.ordering, parsed_query.ordering)
+        roots_qs = CommentModel.objects.filter(depth=1).order_by(ordering, "-id")
         paginator = Paginator(roots_qs, parsed_query.page_size)
         page = paginator.get_page(parsed_query.page)
 

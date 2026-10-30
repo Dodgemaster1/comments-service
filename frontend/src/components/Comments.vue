@@ -6,7 +6,7 @@ const API = '/api'
 const tags = ['i', 'strong', 'code', 'a']
 const pageSize = 25
 const sorts = [
-  { k: 'user_name', l: 'User Name' },
+  { k: 'username', l: 'User Name' },
   { k: 'email', l: 'E-mail' },
   { k: 'created_at', l: 'Date' },
 ]

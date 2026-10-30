@@ -23,6 +23,7 @@ FROM python:3.15-alpine
 COPY --from=builder /app /app
 
 RUN addgroup -S app && adduser -S -G app app \
+    && mkdir -p /app/media/uploads \
     && chown -R app:app /app
 
 ENV PATH="/app/.venv/bin:$PATH"
