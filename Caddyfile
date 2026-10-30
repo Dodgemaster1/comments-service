@@ -1,9 +1,15 @@
 taskum.pp.ua {
     @backend path /api/* /media/* /ws/*
-    reverse_proxy @backend backend:8000
+    handle @backend {
+        reverse_proxy backend:8000
+    }
 
     @health path /health
     respond @health "ok" 200
 
-    reverse_proxy frontend:4173
+    handle {
+        root * /srv
+        try_files {path} /index.html
+        file_server
+    }
 }

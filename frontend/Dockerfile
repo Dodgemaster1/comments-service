@@ -8,14 +8,11 @@ RUN npm ci
 COPY frontend/ .
 RUN npm run build
 
-FROM node:22.18-alpine
+FROM caddy:2.10-alpine
 
-WORKDIR /app
+COPY --from=builder /app/dist /srv
+COPY Caddyfile /etc/caddy/Caddyfile
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package.json ./
+EXPOSE 80
 
-EXPOSE 4173
-
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
